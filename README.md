@@ -1,4 +1,4 @@
-# Hello World! Meu nome é Paulo Neto!
+# Hello World! Meu nome é Paulo Neto
 
 Desenvolvedor PHP/Laravel com foco em backend, APIs REST e bancos de dados relacionais/não relacionais.
 
