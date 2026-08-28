@@ -2,23 +2,27 @@ name: Update Streak Stats
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # roda todo dia à meia-noite
-  workflow_dispatch:       # permite rodar manualmente
+    - cron: '0 0 * * *'
+  workflow_dispatch:
 
 jobs:
   update:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - name: Download streak image
+      - name: Download images
         run: |
           curl -o streak.svg "https://streak-stats.demolab.com?user=paulo-sneto&theme=merko&locale=pt_BR&date_format=j%20M%5B%20Y%5D&mode=weekly&exclude_days=Sun"
+          curl -o stats.svg "https://github-readme-stats.vercel.app/api?username=paulo-sneto&show_icons=true&theme=merko"
+          curl -o langs.svg "https://github-readme-stats.vercel.app/api/top-langs/?username=paulo-sneto&layout=compact&theme=merko"
 
       - name: Commit and push
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git add streak.svg
-          git diff --cached --quiet || git commit -m "chore: update streak stats"
+          git add streak.svg stats.svg langs.svg
+          git diff --cached --quiet || git commit -m "chore: update stats"
           git push
