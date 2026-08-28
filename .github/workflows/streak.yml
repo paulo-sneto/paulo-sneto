@@ -16,7 +16,7 @@ jobs:
       - name: Download images
         run: |
           curl -L -o streak.svg "https://streak-stats.demolab.com?user=paulo-sneto&theme=merko&locale=pt_BR&date_format=j%20M%5B%20Y%5D&mode=weekly&exclude_days=Sun"
-          curl -L -o stats.svg "https://gh-readme-stats.vercel.app/api?username=paulo-sneto&show_icons=true&theme=merko"
+          curl -L -o stats.svg "https://gh-readme-stats.vercel.app/api?username=paulo-sneto&show_icons=true&theme=merko&locale=pt_BR"
           curl -L -o langs.svg "https://gh-readme-stats.vercel.app/api/top-langs/?username=paulo-sneto&layout=compact&theme=merko"
 
       - name: Commit and push
