@@ -2,7 +2,7 @@
 
 Desenvolvedor PHP/Laravel com foco em backend, APIs REST e bancos de dados relacionais/não relacionais.
 
-[![GitHub Streak](https://streak-stats.demolab.com?user=paulo-sneto&theme=merko&locale=pt_BR&date_format=j%20M%5B%20Y%5D&mode=weekly&exclude_days=Sun)](https://git.io/streak-stats)
+[![GitHub Streak](./streak.svg)](https://git.io/streak-stats)
  
 ---
 
