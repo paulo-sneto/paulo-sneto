@@ -38,7 +38,7 @@ Desenvolvedor PHP/Laravel com foco em backend, APIs REST e bancos de dados relac
 
 <div align="center">
 
-![GitHub Stats](./stats.svg)
-![Top Languages](./langs.svg)
+<img src="https://raw.githubusercontent.com/paulo-sneto/paulo-sneto/main/stats.svg" width="400"/>
+<img src="https://raw.githubusercontent.com/paulo-sneto/paulo-sneto/main/langs.svg" width="350"/>
 
 </div>
