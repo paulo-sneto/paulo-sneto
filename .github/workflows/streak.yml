@@ -26,3 +26,11 @@ jobs:
           git add streak.svg stats.svg langs.svg
           git diff --cached --quiet || git commit -m "chore: update stats"
           git push
+
+      - name: Download images
+        run: |
+          curl -L -o streak.svg "https://streak-stats.demolab.com?user=paulo-sneto&theme=merko&locale=pt_BR&date_format=j%20M%5B%20Y%5D&mode=weekly&exclude_days=Sun"
+          curl -L -o stats.svg "https://github-readme-stats.vercel.app/api?username=paulo-sneto&show_icons=true&theme=merko"
+          curl -L -o langs.svg "https://github-readme-stats.vercel.app/api/top-langs/?username=paulo-sneto&layout=compact&theme=merko"
+          head -1 stats.svg
+          head -1 langs.svg
