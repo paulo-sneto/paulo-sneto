@@ -59,6 +59,7 @@ jobs:
         run: |
           set -uo pipefail
           mkdir -p dist
+          sudo chown -R "$(id -u):$(id -g)" dist
           base="https://streak-stats.demolab.com?user=${OWNER}&locale=pt_BR&mode=weekly&exclude_days=Sun"
 
           for pair in "streak-dark:merko" "streak-light:default"; do
