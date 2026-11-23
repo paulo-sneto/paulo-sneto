@@ -45,7 +45,7 @@ jobs:
     env:
       OWNER: ${{ github.repository_owner }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Gerar snake
         uses: Platane/snk@v3
@@ -55,23 +55,39 @@ jobs:
             dist/snake.svg
             dist/snake-dark.svg?palette=github-dark
 
-      - name: Baixar streak (com fallback para a versão anterior)
+      - name: Baixar streak (retry + fallback, nunca bloqueia a publicação)
         run: |
-          set -euo pipefail
+          set -uo pipefail
           mkdir -p dist
           base="https://streak-stats.demolab.com?user=${OWNER}&locale=pt_BR&mode=weekly&exclude_days=Sun"
-          declare -A themes=( [streak-dark]=merko [streak-light]=default )
 
-          for name in "${!themes[@]}"; do
+          for pair in "streak-dark:merko" "streak-light:default"; do
+            name="${pair%%:*}"
+            theme="${pair##*:}"
             out="dist/${name}.svg"
-            if curl -fsSL --retry 3 --retry-delay 10 --max-time 30 \
-                 -o "$out" "${base}&theme=${themes[$name]}" \
-               && grep -q '<svg' "$out"; then
-              echo "✅ ${name} atualizado"
-            else
-              echo "::warning::streak-stats indisponível para ${name}; mantendo versão anterior"
-              curl -fsSL -o "$out" \
-                "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/output/${name}.svg"
+            ok=false
+
+            for attempt in 1 2 3; do
+              if curl -fsSL --max-time 60 -o "${out}.tmp" "${base}&theme=${theme}" \
+                 && grep -q '<svg' "${out}.tmp"; then
+                mv "${out}.tmp" "$out"
+                echo "✅ ${name} atualizado (tentativa ${attempt})"
+                ok=true
+                break
+              fi
+              echo "⏳ ${name}: tentativa ${attempt} falhou"
+              sleep 15
+            done
+            rm -f "${out}.tmp"
+
+            if [ "$ok" = false ]; then
+              if curl -fsSL -o "$out" \
+                   "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/output/${name}.svg"; then
+                echo "::warning::${name}: streak-stats indisponível; mantida versão anterior"
+              else
+                rm -f "$out"
+                echo "::warning::${name}: streak-stats indisponível e sem versão anterior; publicando sem ele"
+              fi
             fi
           done
 
@@ -88,7 +104,7 @@ jobs:
     needs: assets
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Verificar assets do README
         run: bash scripts/check-assets.sh
         env:
